@@ -14,37 +14,64 @@ import javax.imageio.ImageIO;
 public class AddGameFrame extends javax.swing.JFrame {
     HashMap<String, Game> selected = new HashMap<>();
     BufferedImage currentCover = null;
+    Game currentSelect = null;
+    Graphics2D screenCover = null;
     /**
      * Creates new form AddGameFrame
      */
     public AddGameFrame() {
         initComponents();
         gameDesc.setLineWrap(true);
+        infoPanel.setSize(582,255);
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        listPanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        gameList = new javax.swing.JList<>();
+        jSpinner1 = new javax.swing.JSpinner();
         background = new javax.swing.JPanel();
-        infoPanel = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        gameDesc = new javax.swing.JTextArea();
         pubLabel = new javax.swing.JLabel();
         devLabel = new javax.swing.JLabel();
+        genreLabel = new javax.swing.JLabel();
+        modeLabel = new javax.swing.JLabel();
+        listPanel = new javax.swing.JPanel();
+        gameScroll = new javax.swing.JScrollPane();
+        gameList = new javax.swing.JList<>();
+        infoPanel = new javax.swing.JPanel();
+        descScroll = new javax.swing.JScrollPane();
+        gameDesc = new javax.swing.JTextArea();
+        picPane = new javax.swing.JPanel();
+        confirmButton = new javax.swing.JButton();
+        closeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(35, 39, 42));
-        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
+
+        background.setBackground(new java.awt.Color(34, 39, 42));
+        background.setForeground(new java.awt.Color(34, 39, 42));
+
+        pubLabel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        pubLabel.setForeground(new java.awt.Color(153, 153, 153));
+        pubLabel.setMaximumSize(new java.awt.Dimension(250, 0));
+
+        devLabel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        devLabel.setForeground(new java.awt.Color(153, 153, 153));
+        devLabel.setMaximumSize(new java.awt.Dimension(250, 0));
+
+        genreLabel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        genreLabel.setForeground(new java.awt.Color(153, 153, 153));
+        genreLabel.setMaximumSize(new java.awt.Dimension(250, 0));
+
+        modeLabel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        modeLabel.setForeground(new java.awt.Color(153, 153, 153));
+        modeLabel.setMaximumSize(new java.awt.Dimension(250, 0));
 
         listPanel.setBackground(new java.awt.Color(44, 47, 51));
         listPanel.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jScrollPane1.setBackground(new java.awt.Color(44, 57, 41));
-        jScrollPane1.setBorder(null);
+        gameScroll.setBackground(new java.awt.Color(44, 57, 41));
+        gameScroll.setBorder(null);
 
         gameList.setBackground(new java.awt.Color(35, 39, 42));
         gameList.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -57,6 +84,7 @@ public class AddGameFrame extends javax.swing.JFrame {
         });
         gameList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         gameList.setToolTipText("");
+        gameList.setSelectedIndex(0);
         gameList.setSelectionBackground(new java.awt.Color(204, 204, 204));
         gameList.setVerifyInputWhenFocusTarget(false);
         gameList.setVisibleRowCount(10);
@@ -65,7 +93,7 @@ public class AddGameFrame extends javax.swing.JFrame {
                 gameListValueChanged(evt);
             }
         });
-        jScrollPane1.setViewportView(gameList);
+        gameScroll.setViewportView(gameList);
 
         javax.swing.GroupLayout listPanelLayout = new javax.swing.GroupLayout(listPanel);
         listPanel.setLayout(listPanelLayout);
@@ -73,27 +101,24 @@ public class AddGameFrame extends javax.swing.JFrame {
             listPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(listPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(gameScroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         listPanelLayout.setVerticalGroup(
             listPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(listPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, listPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(gameScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        getContentPane().add(listPanel);
-
-        background.setBackground(new java.awt.Color(34, 39, 42));
-        background.setForeground(new java.awt.Color(34, 39, 42));
-
         infoPanel.setBackground(new java.awt.Color(44, 47, 51));
         infoPanel.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        infoPanel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        infoPanel.setPreferredSize(new java.awt.Dimension(582, 254));
 
-        jScrollPane3.setBackground(new java.awt.Color(44, 47, 51));
-        jScrollPane3.setBorder(null);
+        descScroll.setBackground(new java.awt.Color(44, 47, 51));
+        descScroll.setBorder(null);
 
         gameDesc.setEditable(false);
         gameDesc.setBackground(new java.awt.Color(34, 39, 42));
@@ -105,7 +130,7 @@ public class AddGameFrame extends javax.swing.JFrame {
         gameDesc.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         gameDesc.setDisabledTextColor(new java.awt.Color(44, 47, 51));
         gameDesc.setSelectionColor(new java.awt.Color(44, 47, 51));
-        jScrollPane3.setViewportView(gameDesc);
+        descScroll.setViewportView(gameDesc);
 
         javax.swing.GroupLayout infoPanelLayout = new javax.swing.GroupLayout(infoPanel);
         infoPanel.setLayout(infoPanelLayout);
@@ -113,106 +138,167 @@ public class AddGameFrame extends javax.swing.JFrame {
             infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(infoPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3)
+                .addComponent(descScroll)
                 .addContainerGap())
         );
         infoPanelLayout.setVerticalGroup(
             infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, infoPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3)
+                .addComponent(descScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        pubLabel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        pubLabel.setForeground(new java.awt.Color(153, 153, 153));
-        pubLabel.setText("Publisher(s)");
+        picPane.setBackground(new java.awt.Color(128, 0, 0));
+        picPane.setBorder(javax.swing.BorderFactory.createCompoundBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED), javax.swing.BorderFactory.createEtchedBorder()));
+        picPane.setForeground(new java.awt.Color(153, 0, 0));
 
-        devLabel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        devLabel.setForeground(new java.awt.Color(153, 153, 153));
-        devLabel.setText("Developer(s) ");
+        javax.swing.GroupLayout picPaneLayout = new javax.swing.GroupLayout(picPane);
+        picPane.setLayout(picPaneLayout);
+        picPaneLayout.setHorizontalGroup(
+            picPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 259, Short.MAX_VALUE)
+        );
+        picPaneLayout.setVerticalGroup(
+            picPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 341, Short.MAX_VALUE)
+        );
+
+        confirmButton.setBackground(new java.awt.Color(128, 0, 0));
+        confirmButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        confirmButton.setText("Confirm");
+        confirmButton.setToolTipText("");
+        confirmButton.setBorderPainted(false);
+
+        closeButton.setBackground(new java.awt.Color(128, 0, 0));
+        closeButton.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        closeButton.setText("Close");
+        closeButton.setBorderPainted(false);
 
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
         background.setLayout(backgroundLayout);
         backgroundLayout.setHorizontalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, backgroundLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(pubLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, backgroundLayout.createSequentialGroup()
-                        .addComponent(devLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 316, Short.MAX_VALUE)))
-                .addContainerGap())
+            .addGroup(backgroundLayout.createSequentialGroup()
+                .addComponent(listPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(backgroundLayout.createSequentialGroup()
+                        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(pubLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(modeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(devLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(genreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(backgroundLayout.createSequentialGroup()
+                                .addComponent(confirmButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(24, 24, 24)
+                        .addComponent(picPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(12, Short.MAX_VALUE))
+                    .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)))
         );
         backgroundLayout.setVerticalGroup(
             backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(pubLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(devLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 382, Short.MAX_VALUE)
+            .addGroup(backgroundLayout.createSequentialGroup()
+                .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(backgroundLayout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(pubLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(devLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(genreLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(modeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(171, 171, 171)
+                        .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(closeButton)
+                            .addComponent(confirmButton)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(picPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(infoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(listPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        infoPanel.getAccessibleContext().setAccessibleParent(null);
         pubLabel.getAccessibleContext().setAccessibleName("pubLabel");
         devLabel.getAccessibleContext().setAccessibleName("devLabel");
 
-        getContentPane().add(background);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void gameListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_gameListValueChanged
+        changeGame();
+    }//GEN-LAST:event_gameListValueChanged
+    
+    private void PaintCover(Graphics g, int x, int y)
+    {
+        screenCover = (Graphics2D)g;
+        screenCover.drawImage(currentCover, x, y, this);
+    }
+    
+    private void changeGame()
+    {
         gameList.setEnabled(false);
+        
         String name = gameList.getSelectedValue();
-        Game value;
         boolean found = selected.containsKey(name);
         if(found)
         {
-            value = selected.get(name);
+            currentSelect = selected.get(name);
         }else
         {
-            value = new Game(name);
-            selected.put(name, value);
+            currentSelect = new Game(name);
+            selected.put(name, currentSelect);
         }
 
-        gameDesc.setText(value.getDesc());
-        pubLabel.setText(value.getPub());
-        devLabel.setText(value.getDev());
-
+        gameDesc.setText(currentSelect.getDesc());
+        pubLabel.setText("Publisher: " + currentSelect.getPub());
+        devLabel.setText("Developer: " + currentSelect.getDev());
+        genreLabel.setText("Genre: " + currentSelect.getGenre());
+        modeLabel.setText("Mode: " + currentSelect.getMode());
+        
         try
         {
-            BufferedImage cover = ImageIO.read(value.getImageUrl());
+            BufferedImage cover = ImageIO.read(currentSelect.getImageUrl());
             currentCover = cover;
-            PaintCover(this.getGraphics());
+            PaintCover(picPane.getGraphics(),30,8);
         }
         catch(IOException e)
         {
             System.out.print(e);
         }
-        gameList.setEnabled(true);
-    }//GEN-LAST:event_gameListValueChanged
-    
-    private void PaintCover(Graphics g)
-    {
-        Graphics2D draw = (Graphics2D)g;
-        int x = 755;
-        int y = 90;
-        draw.drawImage(currentCover, x, y, this);
+        gameList.setEnabled(true);       
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
+    private javax.swing.JButton closeButton;
+    private javax.swing.JButton confirmButton;
+    private javax.swing.JScrollPane descScroll;
     private javax.swing.JLabel devLabel;
     private javax.swing.JTextArea gameDesc;
     private javax.swing.JList<String> gameList;
+    private javax.swing.JScrollPane gameScroll;
+    private javax.swing.JLabel genreLabel;
     private javax.swing.JPanel infoPanel;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JPanel listPanel;
+    private javax.swing.JLabel modeLabel;
+    private javax.swing.JPanel picPane;
     private javax.swing.JLabel pubLabel;
     // End of variables declaration//GEN-END:variables
 }

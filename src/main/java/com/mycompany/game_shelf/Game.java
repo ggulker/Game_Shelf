@@ -11,6 +11,8 @@ import org.jsoup.nodes.*;
 public class Game {
     private String developer;
     private String publisher;
+    private String genre;
+    private String mode;
     private String name;
     private String desc;
     private String raw;
@@ -36,6 +38,8 @@ public class Game {
             setDesc();
             setDev();
             setPub();
+            setMode();
+            setGenre();
             setImageUrl();
         }
         catch(IOException e)
@@ -47,6 +51,8 @@ public class Game {
                 setDesc();
                 setDev();
                 setPub();
+                setMode();
+                setGenre();                
                 setImageUrl();            
             }
             catch(IOException i)
@@ -63,6 +69,13 @@ public class Game {
         raw = paragraph.text(); 
     }
     
+    private String retrieveInfoFromRaw(String start, String end)
+    {
+        int startDex, endDex;
+        startDex = raw.indexOf(start);
+        endDex = raw.indexOf(end);
+        return raw.substring(startDex, endDex);    
+    }
     //grabs the description of the game from wiki
     private void setDesc()
     {
@@ -83,23 +96,19 @@ public class Game {
     //grabs developers name
     private void setDev()
     {
-        int startDex, endDex;
         String startWord = "Developer(s)";
         String endWord = "Publisher(s)";
-        startDex = raw.indexOf(startWord);
-        endDex = raw.indexOf(endWord);
-        developer = raw.substring(startDex, endDex); 
+        developer = retrieveInfoFromRaw(startWord,endWord); 
+        developer = developer.replace("Developer(s)", "");
     }
     
     //grabs publisher
     private void setPub()
     {
-         int startDex, endDex;
         String startWord = "Publisher(s)";
         String endWord = "Director(s)";
-        startDex = raw.indexOf(startWord);
-        endDex = raw.indexOf(endWord);
-        publisher = raw.substring(startDex, endDex);        
+        publisher = retrieveInfoFromRaw(startWord,endWord);
+        publisher = publisher.replace("Publisher(s)", "");
     }
      
     //sets image of covor art and gets its url
@@ -123,6 +132,24 @@ public class Game {
         }
     }
     
+    private void setGenre()
+    {
+        String startWord = "Genre(s)";
+        String endWord = "Mode(s)";
+        genre = retrieveInfoFromRaw(startWord,endWord);
+        genre = genre.replace("Genre(s)", "");       
+    }
+    
+    private void setMode()
+    {
+        String startWord = "Mode(s)";
+        String endWord = name;
+        int startDex = raw.indexOf(startWord);
+        mode = raw.substring(startDex);
+        int endDex = mode.indexOf(endWord);
+        mode = mode.substring(8, endDex);      
+    }
+    
     public String getDesc()
     {
         return desc;
@@ -136,6 +163,16 @@ public class Game {
     public String getPub()
     {
         return publisher;
+    }
+    
+    public String getMode()
+    {
+        return mode;
+    }
+    
+    public String getGenre()
+    {
+        return genre;
     }
     
     public URL getImageUrl()
