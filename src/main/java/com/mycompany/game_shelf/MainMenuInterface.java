@@ -1,5 +1,18 @@
 package com.mycompany.game_shelf;
+
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JFileChooser;
+import javax.swing.table.DefaultTableModel;
+
 public class MainMenuInterface extends javax.swing.JFrame {
+    //used to hold all games that user has seleceted
+    HashMap<String, Game> selectedGames = new HashMap();
 
     /**
      * Creates new form MainMenu
@@ -17,34 +30,61 @@ public class MainMenuInterface extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
+        backgroundPanel = new javax.swing.JPanel();
+        gameScrollPanel = new javax.swing.JScrollPane();
         gameTable = new javax.swing.JTable();
         addButton = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
+        updateButton = new javax.swing.JButton();
+        titleLabel = new javax.swing.JLabel();
+        saveButton = new javax.swing.JButton();
+        loadButton = new javax.swing.JButton();
+        closeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(34, 39, 42));
+        setResizable(false);
 
-        gameTable.setBackground(new java.awt.Color(153, 153, 153));
+        backgroundPanel.setBackground(new java.awt.Color(34, 39, 42));
+
+        gameScrollPanel.setBackground(new java.awt.Color(44, 47, 51));
+        gameScrollPanel.setForeground(new java.awt.Color(44, 47, 51));
+
+        gameTable.setBackground(new java.awt.Color(44, 47, 51));
         gameTable.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        gameTable.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        gameTable.setForeground(new java.awt.Color(153, 153, 153));
         gameTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Name", "Developer", "Publisher", "Started", "Finished", "100% Completion", "Your Score"
+                "Name", "Developer", "Publisher", "Own", "Status"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
         gameTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         gameTable.setAutoscrolls(false);
-        jScrollPane1.setViewportView(gameTable);
+        gameTable.setFillsViewportHeight(true);
+        gameTable.setSelectionBackground(new java.awt.Color(75, 163, 81));
+        gameScrollPanel.setViewportView(gameTable);
 
+        addButton.setBackground(new java.awt.Color(75, 163, 81));
+        addButton.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         addButton.setText("Add Game");
         addButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -52,31 +92,268 @@ public class MainMenuInterface extends javax.swing.JFrame {
             }
         });
 
+        deleteButton.setBackground(new java.awt.Color(75, 163, 81));
+        deleteButton.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        deleteButton.setText("Delete Game");
+        deleteButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteButtonMouseClicked(evt);
+            }
+        });
+
+        updateButton.setBackground(new java.awt.Color(75, 163, 81));
+        updateButton.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        updateButton.setText("Update");
+        updateButton.setToolTipText("");
+        updateButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                updateButtonMouseClicked(evt);
+            }
+        });
+
+        titleLabel.setFont(new java.awt.Font("Consolas", 0, 48)); // NOI18N
+        titleLabel.setForeground(new java.awt.Color(153, 153, 153));
+        titleLabel.setText("Game Shelf");
+
+        saveButton.setBackground(new java.awt.Color(75, 163, 81));
+        saveButton.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        saveButton.setText("Save File");
+        saveButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                saveButtonMouseClicked(evt);
+            }
+        });
+
+        loadButton.setBackground(new java.awt.Color(75, 163, 81));
+        loadButton.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        loadButton.setText("Load File");
+        loadButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                loadButtonMouseClicked(evt);
+            }
+        });
+
+        closeButton.setBackground(new java.awt.Color(75, 163, 81));
+        closeButton.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        closeButton.setText("Exit");
+        closeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                closeButtonMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout backgroundPanelLayout = new javax.swing.GroupLayout(backgroundPanel);
+        backgroundPanel.setLayout(backgroundPanelLayout);
+        backgroundPanelLayout.setHorizontalGroup(
+            backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(backgroundPanelLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(loadButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(closeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(updateButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(gameScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundPanelLayout.createSequentialGroup()
+                .addContainerGap(235, Short.MAX_VALUE)
+                .addComponent(titleLabel)
+                .addGap(237, 237, 237))
+        );
+        backgroundPanelLayout.setVerticalGroup(
+            backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backgroundPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(titleLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(backgroundPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(backgroundPanelLayout.createSequentialGroup()
+                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(loadButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10))
+                    .addComponent(gameScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(addButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(backgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 90, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(addButton)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addComponent(backgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //opens add game frame when add game button pressed
     private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
-        new AddGameFrame().setVisible(true);
+        new AddGameFrame(this).setVisible(true);
     }//GEN-LAST:event_addButtonMouseClicked
+
+    //event for delete game button when clicked
+    private void deleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseClicked
+        if(gameTable.getSelectedRow() != -1)        
+            delGame();
+    }//GEN-LAST:event_deleteButtonMouseClicked
+
+    //opens frame used to update games status and ownership
+    private void updateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateButtonMouseClicked
+        if(gameTable.getSelectedRow() != -1)
+        {
+            String name = gameTable.getValueAt(gameTable.getSelectedRow(), 0).toString();
+            UpdateFrame update = new UpdateFrame(selectedGames.get(name), this);
+            update.setVisible(true);
+            this.setEnabled(false);
+            delGame();
+        }
+    }//GEN-LAST:event_updateButtonMouseClicked
+
+    private void saveButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveButtonMouseClicked
+        saveFile();
+    }//GEN-LAST:event_saveButtonMouseClicked
+
+    private void loadButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loadButtonMouseClicked
+        DefaultTableModel model = (DefaultTableModel)gameTable.getModel();
+        model.setRowCount(0);
+        loadList();
+    }//GEN-LAST:event_loadButtonMouseClicked
+
+    //closes window and exits app
+    private void closeButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeButtonMouseClicked
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }//GEN-LAST:event_closeButtonMouseClicked
+
+    //adds a game to the table in the main menu and hashmap
+    public void addGame(Game input) {
+        //places game into hashmap for possible future use
+        selectedGames.put(input.getName(), input);
+
+        //get all info for row then add to model
+        Object[] gameData = {input.getName(), input.getDev(), input.getPub(), input.getOwn(), input.getStatus()};
+        DefaultTableModel model = (DefaultTableModel) gameTable.getModel();
+        model.addRow(gameData);
+        gameTable.setModel(model);
+    }
+
+    //remove game from table and hashmap
+    private void delGame() {
+        //remove specific game from hashmap
+        String name = gameTable.getValueAt(gameTable.getSelectedRow(), 0).toString();
+        selectedGames.remove(name);
+
+        //remove selected row from table
+        DefaultTableModel model = (DefaultTableModel) gameTable.getModel();
+        model.removeRow(gameTable.getSelectedRow());
+        gameTable.setModel(model);
+    }
+
+    //used to save file for later use
+    private void saveFile() {
+        //create a file chooser then opens window to save where
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save file as");
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        //if user chooses a save
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            //grab choice as a file
+            File list = fileChooser.getSelectedFile();
+            try {
+                //write each game selected to file with certain characters to denote where the name and status stop
+                FileWriter write = new FileWriter(list);
+
+                //using our hashmap iterate through and save each game
+                for (Map.Entry value : selectedGames.entrySet()) {
+                    Game temp = (Game) value.getValue();
+                    String input = temp.getName();
+                    if (temp.getOwn()) {
+                        input = input + '|' + temp.getStatus() + '-';
+                    } else {
+                        input += "|0-";
+                    }
+                    write.write(input);
+                }
+
+                //close writer
+                write.flush();
+                write.close();
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+        }
+    }
+
+    private void loadList() {
+        //create chooser to open window and find file
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Open File");
+        int userSelection = fileChooser.showOpenDialog(this);
+
+        //if user finds a file
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            //collected file chosen by user
+            File list = fileChooser.getSelectedFile();
+            try {
+                FileReader read = new FileReader(list);
+                char[] input = new char[(int) list.length()];
+                read.read(input);
+
+                //strings to hold current words
+                String name = "";
+                String status;
+                String word = "";
+
+                //for every character look for characters that signify ends of words
+                for (char i : input) {
+                    switch (i) {
+                        //ends of game name
+                        case '|':
+                            name = word;
+                            word = "";
+                            break;
+                        //end of game status
+                        case '-':
+                            Game entry = new Game(name);
+                            if ("0".equals(word)) {
+                                status = null;
+                                entry.setOwn(false);
+                            } else {
+                                status = word;
+                                entry.setOwn(true);
+                            }
+                            entry.setStatus(status);
+                            addGame(entry);
+                            word = "";
+                            break;
+                        default:
+                            word += i;
+                            break;
+                    }
+                }
+                
+                read.close();
+            } 
+            catch (IOException e) {
+                System.out.println(e);
+            }
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -116,7 +393,14 @@ public class MainMenuInterface extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
+    private javax.swing.JPanel backgroundPanel;
+    private javax.swing.JButton closeButton;
+    private javax.swing.JButton deleteButton;
+    private javax.swing.JScrollPane gameScrollPanel;
     private javax.swing.JTable gameTable;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton loadButton;
+    private javax.swing.JButton saveButton;
+    private javax.swing.JLabel titleLabel;
+    private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
 }
